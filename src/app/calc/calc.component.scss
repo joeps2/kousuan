@@ -1,0 +1,49 @@
+.header {
+  font-weight: 500;
+}
+
+.body {
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.formula {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.formula-el {
+  width: 30px;
+  text-align: center;
+}
+
+.answer {
+  display: flex;
+  color: grey;
+  margin-left: 10px;
+}
+
+
+
+input,
+.config {
+  font-size: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  button {
+    font-size: 20px;
+  }
+}
+
+button {
+  font-size: 25px;
+  margin-right: 5px;
+  width: 180px;
+}
+
+.number {
+  width: 50px;
+}

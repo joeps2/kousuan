@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "kousuan"
+    }
+  },
+  "defaultProject": "kousuan",
+  "cli": {
+    "analytics": false
+  }
 }
