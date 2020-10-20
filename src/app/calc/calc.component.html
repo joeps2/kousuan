@@ -3,17 +3,17 @@
   <div class="config">
     答案最大值<input [(ngModel)]="config.answerMax" type="number" name="answerMax" class="number">&nbsp;,
     算数最大值<input [(ngModel)]="config.numMax" type="number" name="numMax" class="number">&nbsp;,
-    <input [(ngModel)]="config.numCount" type="number" name="numCount" class="number">个数相加&nbsp;,
+    <input [(ngModel)]="config.numCount" type="number" name="numCount" class="number">个数运算&nbsp;,
     仅口算<input [(ngModel)]="config.kousuan" name="kousuan" type="checkbox">&nbsp;
     <button (click)="genFormulas()">生成题目</button>
   </div>
-  <div>
-    <button *ngIf="!studying" (click)="start()" style="margin-right: 5px;">开始训练</button>
+  <div class="action">
+    <button *ngIf="!studying && !complete" (click)="start()" style="margin-right: 5px;">开始训练</button>
     <button *ngIf="kousuaning" (click)="completeKS()">完成口算</button>
-    <span *ngIf="kousuaning" style="font-size: 25px;">现在请完成以下题目的口算...</span>
+    <span *ngIf="kousuaning">现在请完成以下题目的口算...</span>
     <button *ngIf="studying && !kousuaning && !writing" (click)="write()">填写答案</button>
     <button *ngIf="writing" (click)="submit()">完成</button>
-    <span *ngIf="time" style="margin-top: 10px;font-size: 25px;">用时{{usedTime}}</span>&nbsp;&nbsp;&nbsp;
+    <span *ngIf="time" style="margin-top: 10px;">用时{{usedTime}}</span>&nbsp;&nbsp;&nbsp;
     <span *ngIf="complete && !config.kousuan">{{result}}</span>
   </div>
   <div class="body">

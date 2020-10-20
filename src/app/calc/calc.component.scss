@@ -2,17 +2,24 @@
   font-weight: 500;
 }
 
+.action{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 .body {
   height: 550px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  color:rgba($color: #000000, $alpha: 0.7);
 }
 
 .formula {
   display: flex;
   flex-direction: row;
   margin-top: 10px;
+  align-items: center;
 }
 
 .formula-el {
@@ -22,7 +29,7 @@
 
 .answer {
   display: flex;
-  color: grey;
+  color:rgba($color: #000000, $alpha: 0.9);
   margin-left: 10px;
 }
 
@@ -46,4 +53,8 @@ button {
 
 .number {
   width: 50px;
+}
+
+span{
+  font-size: 25px;
 }
