@@ -1,27 +1,47 @@
 <div>
-  <div class="header">一年级口算训练(建议ipad横屏使用)</div>
+  <div class="header">
+    <img src="../../assets/icon.jpg" width="40">
+    103和趣班口算训练(建议ipad横屏使用)</div>
   <div class="config">
-    答案最大值<input [(ngModel)]="config.answerMax" type="number" name="answerMax" class="number">&nbsp;,
-    算数最大值<input [(ngModel)]="config.numMax" type="number" name="numMax" class="number">&nbsp;,
-    <input [(ngModel)]="config.numCount" type="number" name="numCount" class="number">个数运算&nbsp;,
-    仅口算<input [(ngModel)]="config.kousuan" name="kousuan" type="checkbox">&nbsp;
-    <button (click)="genFormulas()">生成题目</button>
+    <mat-form-field>
+      <mat-select placeholder="最大数" [(ngModel)]="config.numMax">
+        <mat-option *ngFor="let max of answerMaxs" [value]="max">
+          {{max}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    &nbsp;
+    <mat-form-field>
+      <mat-select placeholder="运算个数" [(ngModel)]="config.numCount">
+        <mat-option *ngFor="let count of numCounts" [value]="count">
+          {{count}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    &nbsp;
+    <mat-checkbox [(ngModel)]="config.kousuan" name="kousuan" type="checkbox">仅口算</mat-checkbox>&nbsp;
+    <button mat-raised-button color="primary" (click)="genFormulas()">生成题目</button>
   </div>
   <div class="action">
-    <button *ngIf="!studying && !complete" (click)="start()" style="margin-right: 5px;">开始训练</button>
-    <button *ngIf="kousuaning" (click)="completeKS()">完成口算</button>
-    <span *ngIf="kousuaning">现在请完成以下题目的口算...</span>
-    <button *ngIf="studying && !kousuaning && !writing" (click)="write()">填写答案</button>
-    <button *ngIf="writing" (click)="submit()">完成</button>
-    <span *ngIf="time" style="margin-top: 10px;">用时{{usedTime}}</span>&nbsp;&nbsp;&nbsp;
-    <span *ngIf="complete && !config.kousuan">{{result}}</span>
+    <button mat-raised-button color="primary" *ngIf="!studying && !complete" (click)="start()"
+      style="margin-right: 5px;">开始训练</button>
+    <button mat-raised-button color="primary" *ngIf="kousuaning" (click)="completeKS()">完成口算</button>
+    <button mat-raised-button color="primary" *ngIf="writing" (click)="submit()">完成训练</button>
+    <div>
+      <span *ngIf="time" style="margin-top: 10px;">用时{{usedTime}}&nbsp;&nbsp;&nbsp;</span>
+      <span *ngIf="complete && !config.kousuan">{{result}}</span>
+      <span *ngIf="kousuaning">现在请完成以下题目的口算...</span>
+      <span *ngIf="studying && writing">现在请填写答案...</span>
+      &nbsp;
+    </div>
   </div>
   <div class="body">
-    <div *ngFor="let formula of formulas">
+    <div *ngFor="let formula of formulas;let i=index">
       <div class="formula">
         <div *ngFor="let el of formula.el" class="formula-el">{{el}}</div>
         <div class="formula-el">=</div>
-        <input type="number" [(ngModel)]="formula.value" [disabled]="!writing" class="number">
+        <button mat-stroked-button color="primary" *ngIf="!config.kousuan" [disabled]="!writing"
+          (click)="openDialog(i)">{{formula.value}}</button>
         <div *ngIf="complete" class="formula-el answer"
           [ngStyle]="{'color':!config.kousuan && formula.answer!==formula.value?'red':'grey'}">
           {{formula.answer}}</div>

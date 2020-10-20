@@ -1,0 +1,17 @@
+.answer {
+  width: 80px;
+  height: 80px;
+  font-size: 40px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+button {
+  font-size: 30px;
+  width: 100px;
+  height: 100px;
+}

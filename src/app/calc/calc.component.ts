@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { InputAnswerComponent } from '../input-answer/input-answer.component';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-calc',
@@ -7,8 +10,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CalcComponent implements OnInit {
 
+  answerMaxs = [5, 10, 20, 50, 100];
+  numCounts = [2, 3];
   config: Config = {
-    answerMax: 5,
     numCount: 2,
     numMax: 5,
     kousuan: false
@@ -22,7 +26,13 @@ export class CalcComponent implements OnInit {
   private startTime: number;
   private formulaCount = 20;
 
-  constructor() { }
+  constructor(private dialog: MatDialog) {
+    const config = localStorage.getItem('kousuan-config');
+    if (config) {
+      this.config = JSON.parse(config);
+    }
+    this.formulas = (new Array(this.formulaCount).fill(1).map(el => this.getEquation(this.config)));
+  }
 
   get usedTime() {
     const min = Math.floor(this.time / 60);
@@ -38,27 +48,17 @@ export class CalcComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const config = localStorage.getItem('kousuan-config');
-    if (config) {
-      this.config = JSON.parse(config);
-    }
-    this.formulas = (new Array(this.formulaCount).fill(1).map(el => this.getEquation(this.config)));
   }
 
   genFormulas() {
     this.initStatus();
     localStorage.setItem('kousuan-config', JSON.stringify(this.config));
-    this.formulas = (new Array(24).fill(1).map(el => this.getEquation(this.config)));
-    for (let i = 0; i < 20; i++) {
-      if (i > 9) {
-
-      }
-    }
+    this.formulas = (new Array(this.formulaCount).fill(1).map(el => this.getEquation(this.config)));
   }
 
   start() {
     this.initStatus();
-    this.formulas.forEach(formula => formula.value = null);
+    this.formulas.forEach(formula => formula.value = '?');
     this.time = null;
     this.startTime = Date.now();
     this.kousuaning = true;
@@ -72,7 +72,9 @@ export class CalcComponent implements OnInit {
     if (this.config.kousuan) {
       this.complete = true;
       this.studying = false;
+      return;
     }
+    this.writing = true;
   }
 
   write() {
@@ -86,17 +88,28 @@ export class CalcComponent implements OnInit {
     this.writing = false;
   }
 
+  openDialog(i: number): void {
+    const dialogRef = this.dialog.open(InputAnswerComponent, {
+      width: '350px',
+      data: null,
+    });
+    dialogRef.afterClosed()
+      .pipe(filter(result => result !== undefined && typeof result === 'number'))
+      .subscribe(result => this.formulas[i].value = result);
+  }
+
   private initStatus() {
     this.studying = false;
     this.kousuaning = false;
     this.writing = false;
     this.complete = false;
+    this.time = undefined;
   }
 
   private getEquation(config: Config): Formula {
     const el = [];
     let calcEls = [];
-    const answer = this.randomNum(0, config.answerMax);
+    const answer = this.randomNum(0, config.numMax);
     const num0 = this.randomNum(1, config.numMax);
     el.push(num0);
     calcEls.push(num0);
@@ -118,7 +131,7 @@ export class CalcComponent implements OnInit {
         .filter(n => typeof n === 'string')
         .forEach(n => n = n === '+' ? '-' : '+');
     }
-    return { answer, el };
+    return { answer, el, value: '?' };
   }
 
   private getNumber(num1: number, numMax: number, answer?: number) {
@@ -167,11 +180,10 @@ export class CalcComponent implements OnInit {
 export interface Formula {
   el: any[];
   answer: number;
-  value?: number;
+  value: number | string;
 }
 
 interface Config {
-  answerMax: number;
   numCount: number;
   numMax: number;
   kousuan: boolean;
