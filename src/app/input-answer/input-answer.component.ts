@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Formula } from '../calc/calc.component';
 
 @Component({
   selector: 'app-input-answer',
@@ -14,11 +15,14 @@ export class InputAnswerComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<InputAnswerComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public el: any[],
-  ) { }
+    public formula: Formula,
+  ) {
+    if (formula.value !== '?') {
+      this.value = formula.value.toString();
+    }
+  }
 
   ngOnInit() {
-
   }
 
   input(num: number) {
@@ -33,8 +37,7 @@ export class InputAnswerComponent implements OnInit {
   }
 
   confirm() {
-    const value = this.value ? Number(this.value) : '?';
-    this.dialogRef.close(value);
+    this.dialogRef.close(Number(this.value));
   }
 
   onNoClick(): void {
