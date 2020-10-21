@@ -91,7 +91,7 @@ export class CalcComponent implements OnInit {
   openDialog(i: number): void {
     const dialogRef = this.dialog.open(InputAnswerComponent, {
       width: '350px',
-      data: null,
+      data: this.formulas[i].el,
     });
     dialogRef.afterClosed()
       .pipe(filter(result => result !== undefined && typeof result === 'number'))

@@ -1,5 +1,6 @@
 <div class="answer">
-  <span>{{answer}}</span>
+  <span *ngFor="let i of el">{{i}}</span>=
+  <span>{{value}}</span>
 </div>
 <div class="panel">
   <button *ngFor="let i of numbers" mat-stroked-button color="primary" (click)="input(i)">{{i}}</button>

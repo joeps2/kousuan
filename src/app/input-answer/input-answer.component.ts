@@ -9,12 +9,12 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 export class InputAnswerComponent implements OnInit {
 
   numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-  private value = '';
+  value = '';
 
   constructor(
     public dialogRef: MatDialogRef<InputAnswerComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public answer: number,
+    public el: any[],
   ) { }
 
   ngOnInit() {
@@ -23,22 +23,18 @@ export class InputAnswerComponent implements OnInit {
 
   input(num: number) {
     this.value = `${this.value}${num}`;
-    this.answer = Number(this.value);
   }
 
   backspace() {
     const length = this.value.length;
     if (length > 0) {
       this.value = this.value.slice(length - 2, length - 1);
-      this.answer = Number(this.value);
-      if (!this.answer) {
-        this.answer = undefined;
-      }
     }
   }
 
   confirm() {
-    this.dialogRef.close(this.answer);
+    const value = this.value ? Number(this.value) : '?';
+    this.dialogRef.close(value);
   }
 
   onNoClick(): void {
