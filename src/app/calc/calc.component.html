@@ -19,6 +19,14 @@
       </mat-select>
     </mat-form-field>
     &nbsp;
+    <mat-form-field>
+      <mat-select placeholder="题目数量" [(ngModel)]="config.formulaCount">
+        <mat-option *ngFor="let count of formulaCounts" [value]="count">
+          {{count}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    &nbsp;
     <mat-checkbox [(ngModel)]="config.kousuan" name="kousuan" type="checkbox">仅口算</mat-checkbox>&nbsp;
     <button mat-raised-button color="primary" (click)="genFormulas()">生成题目</button>
   </div>

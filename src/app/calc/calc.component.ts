@@ -12,10 +12,12 @@ export class CalcComponent implements OnInit {
 
   answerMaxs = [5, 10, 20, 50, 100];
   numCounts = [2, 3];
+  formulaCounts = [20, 30, 40, 50, 60, 100];
   config: Config = {
     numCount: 2,
     numMax: 5,
-    kousuan: false
+    kousuan: false,
+    formulaCount: 30,
   };
   formulas: Formula[];
   studying: boolean;
@@ -24,14 +26,13 @@ export class CalcComponent implements OnInit {
   complete: boolean;
   time: number;
   private startTime: number;
-  private formulaCount = 20;
 
   constructor(private dialog: MatDialog) {
     const config = localStorage.getItem('kousuan-config');
     if (config) {
       this.config = JSON.parse(config);
     }
-    this.formulas = (new Array(this.formulaCount).fill(1).map(el => this.getEquation(this.config)));
+    this.formulas = (new Array(this.config.formulaCount).fill(1).map(el => this.getEquation(this.config)));
   }
 
   get usedTime() {
@@ -44,7 +45,7 @@ export class CalcComponent implements OnInit {
     const right = this.formulas
       .filter(f => f.value === f.answer)
       .length;
-    return `对${right}题，错${this.formulaCount - right}题`;
+    return `对${right}题，错${this.config.formulaCount - right}题`;
   }
 
   ngOnInit(): void {
@@ -53,7 +54,7 @@ export class CalcComponent implements OnInit {
   genFormulas() {
     this.initStatus();
     localStorage.setItem('kousuan-config', JSON.stringify(this.config));
-    this.formulas = (new Array(this.formulaCount).fill(1).map(el => this.getEquation(this.config)));
+    this.formulas = (new Array(this.config.formulaCount).fill(1).map(el => this.getEquation(this.config)));
   }
 
   start() {
@@ -187,6 +188,7 @@ interface Config {
   numCount: number;
   numMax: number;
   kousuan: boolean;
+  formulaCount: number;
 }
 
 
